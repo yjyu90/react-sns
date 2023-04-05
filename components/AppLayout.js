@@ -14,21 +14,29 @@ const SearchInput = styled(Input.Search)`
 const AppLayout = ({children}) => {
     //const [isLoggedIn, setIsLoggedIn] = useState(false);
     const {isLoggedIn} = useSelector((state)=>state.user);
+
+    const menuItems = [
+        {
+            label: <Link href="/"><a>노드버드</a></Link>,
+            key: "nodebird",
+        },
+        {
+            label: <Link href="/profile"><a>프로필</a></Link>,
+            key: "profile",
+        },
+        {
+            label: <SearchInput enterButton />,
+            key: "enter",
+        },
+        {
+            label: <Link href="/signup"><a>회원가입</a></Link>,
+            key: "signup",
+        }
+    ];
+
     return (
         <div>
-            <Menu mode="horizontal">
-                <Menu.Item>
-                    <Link href="/"><a>노드버드</a></Link>
-                </Menu.Item>
-                <Menu.Item>
-                    <Link href="/profile"><a>프로필</a></Link>
-                </Menu.Item>
-                <Menu.Item>
-                    <SearchInput enterButton />
-                </Menu.Item>
-                <Menu.Item>
-                    <Link href="/signup"><a>회원가입</a></Link>
-                </Menu.Item>
+            <Menu mode="horizontal" items={menuItems}>
             </Menu>
             <Row gutter={8}>
                 <Col xs={24} md={6}>
