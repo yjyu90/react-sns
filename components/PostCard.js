@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import PostImages from "./PostImages";
 import {useCallback, useState} from "react";
 import CommentForm from "./CommentForm";
+import PostCardContent from "./PostCardContent";
 //jsx 안에
 const PostCard = ({post}) => {
     const [liked, setLiked] = useState(false);
@@ -45,8 +46,8 @@ const PostCard = ({post}) => {
                 <Card.Meta
                     avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
                     title={post.User.nickname}
-                    description={post.content}>
-                </Card.Meta>
+                    description={<PostCardContent postData={post.content} />}
+                />
             </Card>
             {commentFormOpened && (
                 <div>
