@@ -6,9 +6,25 @@ import UserProfile from '../components/UserProfile';
 import LoginForm from '../components/LoginForm';
 import styled from 'styled-components';
 import {useSelector} from "react-redux";
+import {createGlobalStyle} from "styled-components";
 
 const SearchInput = styled(Input.Search)`
   vertical-align: middle;
+`;
+
+const Global = createGlobalStyle`
+  .ant-row{
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+  
+  .ant-col:first-child{
+    padding-left: 0 !important;
+  }
+  
+  .ant-col:last-child{
+    padding-right: 0 !important;
+  }
 `;
 
 const AppLayout = ({children}) => {
@@ -36,6 +52,7 @@ const AppLayout = ({children}) => {
 
     return (
         <div>
+            <Global />
             <Menu mode="horizontal" items={menuItems}>
             </Menu>
             <Row gutter={8}>

@@ -7,7 +7,11 @@ export const initialState = {
         },
         content: '첫 번째 게시글 #해시태그 #익스프레스',
         Images:[{
-            src:''
+            src:'https://cms-cdn.placeholder.co/Home_page1_76f0b1d7ab.png?width=3840'
+        }, {
+            src:'https://mblogthumb-phinf.pstatic.net/MjAxOTExMDJfMzEg/MDAxNTcyNjQ3NTYwNzY0.OSSBhYdhOiVK-3Mjf4nG5L9Cxet1aMqAhgxprtotcg4g.w3yD5w7s0K0DSarrjCNxR9gMWuwJYGCY8C1i68r34Zog.PNG.hadaboni80/screenshot-www.w3schools.com-2019.11.02-07_32_21.png?type=w800'
+        }, {
+            src:'https://fastly.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI'
         }],
         Comments:[{
             User:{
