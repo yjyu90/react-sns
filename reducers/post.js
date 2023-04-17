@@ -132,7 +132,12 @@ const reducer = (state = initialState, action) => {
                 draft.addCommentError = null;
                 break;
             case ADD_COMMENT_SUCCESS:{
-                const postIndex = state.mainPosts.findIndex((v)=> v.id === action.data.postId);
+                const post = draft.mainPosts.find((v) => v.id === action.data.postId);
+                post.Comments.unshift(dummyComment(action.data.content));
+                draft.addCommentLoading = false;
+                draft.addCommentDone = true;
+                break;
+                /*const postIndex = state.mainPosts.findIndex((v)=> v.id === action.data.postId);
                 const post = {...state.mainPosts[postIndex]};
                 post.Comments = [dummyComment(action.data.content), ...post.Comments];
                 const mainPosts = [...state.mainPosts];
@@ -143,14 +148,15 @@ const reducer = (state = initialState, action) => {
                     mainPosts,
                     addCommentLoading: false,
                     addCommentDone: true
-                };
+                };*/
             }
             case ADD_COMMENT_FAILURE:
                 draft.addCommentLoading = false;
                 draft.addCommentError = action.error;
                 break;
             default:
-                return state;
+                break;
+                //return state;
         }
     });
 };
