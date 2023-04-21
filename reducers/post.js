@@ -50,6 +50,19 @@ export const initialState = {
     addCommentError: null,
 };
 
+initialState.mainPosts.concat(
+  Array(20).fill().map((v, i) => ({
+      id: shortId.generate(),
+      User: {
+          id: shortId.generate(),
+      },
+      content: faker.,
+      Images: [],
+      Comments: [],
+  }))
+);
+
+
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
