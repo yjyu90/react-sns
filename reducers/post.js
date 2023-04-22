@@ -1,42 +1,18 @@
 import shortId from 'shortid';
 import {act} from "react-dom/test-utils";
 import produce from "immer";
+import faker from 'faker';
 
 export const initialState = {
-    mainPosts:[{
-        id:1,
-        User: {
-            id:1,
-            nickname:'테스트이름1',
-        },
-        content: '첫 번째 게시글 #해시태그 #익스프레스',
-        Images:[{
-            id: shortId.generate(),
-            src:'https://cms-cdn.placeholder.co/Home_page1_76f0b1d7ab.png?width=3840'
-        }, {
-            id: shortId.generate(),
-            src:'https://mblogthumb-phinf.pstatic.net/MjAxOTExMDJfMzEg/MDAxNTcyNjQ3NTYwNzY0.OSSBhYdhOiVK-3Mjf4nG5L9Cxet1aMqAhgxprtotcg4g.w3yD5w7s0K0DSarrjCNxR9gMWuwJYGCY8C1i68r34Zog.PNG.hadaboni80/screenshot-www.w3schools.com-2019.11.02-07_32_21.png?type=w800'
-        }, {
-            id: shortId.generate(),
-            src:'https://fastly.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI'
-        }],
-        Comments:[{
-            id: shortId.generate(),
-            User:{
-                id: shortId.generate(),
-                nickname:'hero1'
-            },
-            content:'커맨트 내용입니다.1'
-        }, {
-            id: shortId.generate(),
-            User:{
-                id: shortId.generate(),
-                nickname:'hero2'
-            },
-            content:'커맨트 내용입니다.2'
-        }]
-    }],
+    mainPosts:[],
     imagePaths:[],
+
+    hasMorePosts: true,
+
+    loadPostsLoading: false,
+    loadPostsDone: false,
+    loadPostsError: null,
+
     addPostLoading: false,
     addPostDone: false,
     addPostError: null,
@@ -50,18 +26,30 @@ export const initialState = {
     addCommentError: null,
 };
 
-initialState.mainPosts.concat(
-  Array(20).fill().map((v, i) => ({
+
+ export const generateDummyPost = (number) => Array(number).fill().map((v, i) => ({
       id: shortId.generate(),
       User: {
           id: shortId.generate(),
+          nickname: faker.name.findName()
       },
-      content: faker.,
-      Images: [],
-      Comments: [],
-  }))
-);
+      content: faker.lorem.paragraph(),
+      Images: [{
+          src: faker.image.image(),
+      }],
+      Comments: [{
+          User: {
+              id: shortId.generate(),
+              nickname: faker.name.findName()
+          },
+          content: faker.lorem.sentence(),
+      }],
+  }));
 
+
+export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
+export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
+export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE';
 
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
@@ -111,6 +99,21 @@ const reducer = (state = initialState, action) => {
 
     return produce(state, (draft) => {
         switch(action.type) {
+            case LOAD_POSTS_REQUEST:
+                draft.loadPostsLoading = true;
+                draft.loadPostsDone = false;
+                draft.loadPostsError = null;
+                break;
+            case LOAD_POSTS_SUCCESS:
+                draft.loadPostsLoading = false;
+                draft.loadPostsDone = true;
+                draft.mainPosts = action.data.concat(draft.mainPosts);
+                draft.hasMorePosts = draft.mainPosts.length < 50;
+                break;
+            case LOAD_POSTS_FAILURE:
+                draft.loadPostsLoading = false;
+                draft.loadPostsError = action.error;
+                break;
             case ADD_POST_REQUEST:
                 draft.addPostLoading = true;
                 draft.addPostDone = false;
