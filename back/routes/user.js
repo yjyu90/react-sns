@@ -155,7 +155,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
 });
 
 //회원가입 Post /user/
-router.post('/', async (req, res, next)=> {
+router.post('/', isNotLoggedIn, async (req, res, next)=> {
     try{
         const exUser= await User.findOne({
             where : {

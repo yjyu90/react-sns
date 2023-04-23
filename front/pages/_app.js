@@ -4,20 +4,20 @@ import 'antd/dist/antd.css';
 import Head from 'next/head';
 import wrapper from '../store/configureStore';
 
-const Nodebird = ({Component}) =>{
+const ReactSns = ({Component}) =>{
     return(
         <>
             <Head>
                 <meta charSet="utf-8" />
-                <title>Nodebird</title>
+                <title>react-sns</title>
             </Head>
             <Component></Component>
         </>
     )
 };
 
-Nodebird.propTypes = {
+ReactSns.propTypes = {
     Component: PropTypes.elementType.isRequired,
 }
 
-export default wrapper.withRedux(Nodebird);
+export default wrapper.withRedux(ReactSns);

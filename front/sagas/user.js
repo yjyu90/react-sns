@@ -30,9 +30,6 @@ function logInAPI(data){
     return axios.post('/user/login', data);
 }
 
-function logOutAPI(){
-    return axios.post('/user/logout');
-}
 
 function signUpAPI(data){
     return axios.post('/user', data);
@@ -70,20 +67,25 @@ function* logIn(action){
     }
 }
 
-function* logOut(action){
-    try{
-        //const result = yield call(logOutAPI());
+function logOutAPI() {
+    return axios.post('/user/logout');
+}
+
+function* logOut() {
+    try {
+        yield call(logOutAPI);
         yield put({
-            type : LOG_OUT_SUCCESS,
-            data : action.data
+            type: LOG_OUT_SUCCESS,
         });
-    }catch (err){
+    } catch (err) {
+        console.error(err);
         yield put({
-            type : LOG_OUT_FAILURE,
-            error : err.response.data,
+            type: LOG_OUT_FAILURE,
+            error: err.response.data,
         });
     }
 }
+
 
 function* follow(action){
     try{

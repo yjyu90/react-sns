@@ -1,4 +1,4 @@
-import React, {useCallback, useState, useMemo} from 'react';
+import React, {useCallback, useState, useMemo, useEffect} from 'react';
 import useInput from '../hooks/useinput';
 import {Form, Input, Button} from 'antd';
 import Link from 'next/link';
@@ -16,7 +16,7 @@ const FormWrapper = styled(Form)`
 
 const LoginForm = () =>{
     const dispatch = useDispatch();
-    const {logInLoading} = useSelector((state)=>(state.user));
+    const {logInLoading, logInError} = useSelector((state)=>(state.user));
     /*const [id, setId] = useState('');
     const onChangeId = useCallback((e) => {
         setId(e.target.value);
@@ -29,7 +29,11 @@ const LoginForm = () =>{
     }, []);*/
     const [password, onChangePassword] = useInput('');
 
-
+    useEffect(() => {
+        if (logInError) {
+            alert(logInError);
+        }
+    }, [logInError]);
     //const style = useMemo(() => ({marginTop: 10}), []);
 
     const onSubmitForm = useCallback(() => {

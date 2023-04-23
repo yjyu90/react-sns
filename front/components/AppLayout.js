@@ -33,8 +33,8 @@ const AppLayout = ({children}) => {
 
     const menuItems = [
         {
-            label: <Link href="/"><a>노드버드</a></Link>,
-            key: "nodebird",
+            label: <Link href="/"><a>sns</a></Link>,
+            key: "sns",
         },
         {
             label: <Link href="/profile"><a>프로필</a></Link>,
@@ -63,7 +63,7 @@ const AppLayout = ({children}) => {
                     {children}
                 </Col>
                 <Col xs={24} md={6}>
-                    <a href="https://github.com/youngjin-yu" target="_blank" rel="noreferrer noopener"> Made by yj</a>
+                    <a href="https://github.com/youngjin-yu" target="_blank" rel="noreferrer noopener"> Made by yjyu</a>
                 </Col>
             </Row>
 
