@@ -27,15 +27,15 @@ function unfollowAPI(data){
 }
 
 function logInAPI(data){
-    return axios.post('/api/login', data);
+    return axios.post('/user/login', data);
 }
 
 function logOutAPI(){
-    return axios.post('/api/logout');
+    return axios.post('/user/logout');
 }
 
 function signUpAPI(data){
-    return axios.post('http://localhost:3065/user', data);
+    return axios.post('/user', data);
 }
 
 function* signUp(action){
@@ -56,10 +56,11 @@ function* signUp(action){
 
 function* logIn(action){
     try{
-        //const result = yield call(logInAPI, action.data);
+        const result = yield call(logInAPI, action.data);
+        console.log(result);
         yield put({
             type : LOG_IN_SUCCESS,
-            data : action.data
+            data : result.data
         });
     }catch(err){
         yield put({

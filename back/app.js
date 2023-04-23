@@ -2,19 +2,47 @@ const express = require('express');
 const postRouter = require('./routes/post');
 const userRouter = require('./routes/user');
 const db = require('./models');
+const passportConfig = require('./passport');
+
+const dotenv = require('dotenv');
+
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const passport = require('passport');
+
+dotenv.config();
 const app = express();
 const cors = require('cors');
+
+
+
 db.sequelize.sync()
     .then(()=>{
         console.log('db 연결 성공');
     })
     .catch(console.error);
+passportConfig();
+
 app.use(cors({
     origin : true,
     credentials : false,
 }));//origin : true 로 설정해두면 * 대신 보낸 곳의 주소가 자동으로 들어가 편리합니다.
 app.use(express.json());//json 데이터를 프론트의 req.body에 넣어준다
 app.use(express.urlencoded({extended : true}));
+
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(session({
+    saveUninitialized: false,
+    resave: false,
+    secret: process.env.COOKIE_SECRET,
+    cookie: {
+        httpOnly: true,
+        secure: false,
+        domain: process.env.NODE_ENV === 'production' && '.nodebird.com'
+    },
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 //get 가져오다
 //post 생성하다
