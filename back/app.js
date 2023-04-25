@@ -24,8 +24,8 @@ db.sequelize.sync()
 passportConfig();
 
 app.use(cors({
-    origin : true,
-    credentials : false,
+    origin : 'http://localhost:3060',// origin : true 도 가능
+    credentials : true,//쿠키를 같이 전달하고자 하는 경우 사용 Access-Control-Allow-Credentials : true
 }));//origin : true 로 설정해두면 * 대신 보낸 곳의 주소가 자동으로 들어가 편리합니다.
 app.use(express.json());//json 데이터를 프론트의 req.body에 넣어준다
 app.use(express.urlencoded({extended : true}));

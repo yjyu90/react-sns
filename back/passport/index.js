@@ -7,6 +7,7 @@ module.exports = () => {
     done(null, user.id);
   });
 
+  //deserializeUser : 라우터에 접근 시 실행 됨
   passport.deserializeUser(async (id, done) => {
     try {
       const user = await User.findOne({ where: { id }});

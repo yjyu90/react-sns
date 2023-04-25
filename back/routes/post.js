@@ -32,6 +32,8 @@ const upload = multer({
     }),
     limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
 });
+
+//게시글 작성
 router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // POST /post
     try {
         const hashtags = req.body.content.match(/#[^\s#]+/g);
@@ -193,13 +195,14 @@ router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => { // POST 
     }
 });
 
+//댓글 달기
 router.post('/:postId/comment', isLoggedIn, async (req, res, next) => { // POST /post/1/comment
     try {
         const post = await Post.findOne({
             where: { id: req.params.postId },
         });
         if (!post) {
-            return res.status(403).send('존재하지 않는 게시글입니다.');
+            return res.status(403).send('존재하지 않는 게시글입니다.');//403 금지
         }
         const comment = await Comment.create({
             content: req.body.content,
