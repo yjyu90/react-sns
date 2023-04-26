@@ -3,7 +3,7 @@ import produce from '../util/produce';
 export const initialState = {
     mainPosts: [],
     singlePost: null,
-    imagePaths: [],
+    imagePaths: [],//이미지 업로드 시 이미지 경로
     hasMorePosts: true,
     likePostLoading: false,
     likePostDone: false,
@@ -18,7 +18,7 @@ export const initialState = {
     loadPostsDone: false,
     loadPostsError: null,
     addPostLoading: false,
-    addPostDone: false,
+    addPostDone: false,//게시글 추가 완료 시 true로
     addPostError: null,
     updatePostLoading: false,
     updatePostDone: false,
