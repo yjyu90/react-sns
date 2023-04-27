@@ -8,7 +8,10 @@ const { Op } = require('sequelize');
 
 router.get('/', async (req, res, next) => { // GET /user
     try {
+        //사용자가 있을 때만 DB에서 조회한다.
         if (req.user) {
+            console.log('/user get request' + req.user);
+            console.log('/user get request id is ' + req.user.id);
             const fullUserWithoutPassword = await User.findOne({
                 where: { id: req.user.id },
                 attributes: {
@@ -16,15 +19,15 @@ router.get('/', async (req, res, next) => { // GET /user
                 },
                 include: [{
                     model: Post,
-                    attributes: ['id'],
+                    attributes: ['id'],////length를 구하려는 것이기 때문에 id만 조회하겠다는 의미, Post id만 조회하겠다는 의미
                 }, {
                     model: User,
                     as: 'Followings',
-                    attributes: ['id'],
+                    attributes: ['id'],//length를 구하려는 것이기 때문에 id만 조회하겠다는 의미
                 }, {
                     model: User,
                     as: 'Followers',
-                    attributes: ['id'],
+                    attributes: ['id'],//length를 구하려는 것이기 때문에 id만 조회하겠다는 의미
                 }]
             })
             res.status(200).json(fullUserWithoutPassword);
@@ -208,7 +211,7 @@ router.post('/', isNotLoggedIn, async (req, res, next)=> {
             nickname : req.body.nickname,
             password : hashedPassword,
         });
-        res.setHeader('Access-Control-Allow-Origin', '*');//http://localhost:3060 또는 *
+        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3060');//http://localhost:3060 또는 *
         res.status(201).send('ok');
     }catch (error){
         console.error(error);
