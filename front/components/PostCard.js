@@ -6,7 +6,7 @@ import PostImages from "./PostImages";
 import {useCallback, useState} from "react";
 import CommentForm from "./CommentForm";
 import PostCardContent from "./PostCardContent";
-import {REMOVE_POST_REQUEST} from "../reducers/post";
+import {LIKE_POST_REQUEST, REMOVE_POST_REQUEST, UNLIKE_POST_REQUEST} from "../reducers/post";
 import FollowButton from "./FollowButton";
 //jsx 안에
 const PostCard = ({post}) => {
@@ -17,8 +17,18 @@ const PostCard = ({post}) => {
 
     const {me} = useSelector(state => state.user);
 
-    const onToggleLike = useCallback((e) => {
-        setLiked((prev) => !prev);
+    const onLike = useCallback((e) => {
+        dispatch({
+            type: LIKE_POST_REQUEST,
+            data: post.id
+        });
+    },[]);
+
+    const onUnLike = useCallback((e) => {
+        dispatch({
+            type: UNLIKE_POST_REQUEST,
+            data: post.id
+        });
     },[]);
 
     const onToggleComment = useCallback((e) => {
@@ -40,7 +50,7 @@ const PostCard = ({post}) => {
                 cover={post.Images[0] && <PostImages images={post.Images} />}
                 actions={[
                     <RetweetOutlined key="retweet"/>,
-                    liked ? <HeartTwoTone twoToneColor="#eb2f96" key="twotone" onClick={onToggleLike}></HeartTwoTone> : <HeartOutlined key="heart" onClick={onToggleLike} />,
+                    liked ? <HeartTwoTone twoToneColor="#eb2f96" key="twotone" onClick={onUnLike}></HeartTwoTone> : <HeartOutlined key="heart" onClick={onLike} />,
                     <MessageOutlined key="comment" onClick={onToggleComment} />,
                     <Popover key="more" content={(
                         <Button.Group>
@@ -92,7 +102,7 @@ PostCard.propTypes = {
         id: PropTypes.number,
         User: PropTypes.object,
         content: PropTypes.string,
-        createdAt: PropTypes.object,
+        createdAt: PropTypes.string,
         Comments: PropTypes.arrayOf(PropTypes.object),
         Images: PropTypes.arrayOf(PropTypes.object),
     })

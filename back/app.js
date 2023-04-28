@@ -1,8 +1,11 @@
 const express = require('express');
 const postRouter = require('./routes/post');
+const postsRouter = require('./routes/posts');
 const userRouter = require('./routes/user');
 const db = require('./models');
 const passportConfig = require('./passport');
+
+const morgan = require('morgan');
 
 const dotenv = require('dotenv');
 
@@ -23,6 +26,7 @@ db.sequelize.sync()
     .catch(console.error);
 passportConfig();
 
+app.use(morgan('dev'));
 app.use(cors({
     origin : true,// origin : true 도 가능 http://localhost:3060
     credentials : true,//쿠키를 같이 전달하고자 하는 경우 사용 Access-Control-Allow-Credentials : true
@@ -56,6 +60,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/post', postRouter);
+app.use('/posts', postsRouter);
 app.use('/user', userRouter);
 
 app.listen(3065, () => {

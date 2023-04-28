@@ -33,7 +33,7 @@ const upload = multer({
     limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
 });
 
-//게시글 작성
+//게시글 1개 작성
 router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // POST /post
     try {
         const hashtags = req.body.content.match(/#[^\s#]+/g);
@@ -195,7 +195,7 @@ router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => { // POST 
     }
 });
 
-//댓글 달기
+//게시글에 1개 댓글 달기
 router.post('/:postId/comment', isLoggedIn, async (req, res, next) => { // POST /post/1/comment
     try {
         const post = await Post.findOne({
@@ -206,7 +206,7 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => { // POST 
         }
         const comment = await Comment.create({
             content: req.body.content,
-            PostId: parseInt(req.params.postId, 10),
+            PostId: parseInt(req.params.postId, 10),//숫자로 바꿀 것
             UserId: req.user.id,
         })
         const fullComment = await Comment.findOne({
@@ -223,11 +223,12 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => { // POST 
     }
 });
 
+//좋아요
 router.patch('/:postId/like', isLoggedIn, async (req, res, next) => { // PATCH /post/1/like
     try {
         const post = await Post.findOne({ where: { id: req.params.postId }});
         if (!post) {
-            return res.status(403).send('게시글이 존재하지 않습니다.');
+            return res.status(403).send('게시글이 존재하지 않습니다.');//403 금지
         }
         await post.addLikers(req.user.id);
         res.json({ PostId: post.id, UserId: req.user.id });
@@ -237,6 +238,8 @@ router.patch('/:postId/like', isLoggedIn, async (req, res, next) => { // PATCH /
     }
 });
 
+
+//좋아요 취소
 router.delete('/:postId/like', isLoggedIn, async (req, res, next) => { // DELETE /post/1/like
     try {
         const post = await Post.findOne({ where: { id: req.params.postId }});
@@ -276,6 +279,7 @@ router.patch('/:postId', isLoggedIn, async (req, res, next) => { // PATCH /post/
     }
 });
 
+//게시글 1개 삭제
 router.delete('/:postId', isLoggedIn, async (req, res, next) => { // DELETE /post/10
     try {
         await Post.destroy({

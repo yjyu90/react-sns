@@ -219,22 +219,28 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             draft.loadPostError = action.error;
             break;
         case LOAD_USER_POSTS_REQUEST:
+            break;
         case LOAD_HASHTAG_POSTS_REQUEST:
+            break;
         case LOAD_POSTS_REQUEST:
             draft.loadPostsLoading = true;
             draft.loadPostsDone = false;
             draft.loadPostsError = null;
             break;
         case LOAD_USER_POSTS_SUCCESS:
+            break;
         case LOAD_HASHTAG_POSTS_SUCCESS:
+            break;
         case LOAD_POSTS_SUCCESS:
             draft.loadPostsLoading = false;
             draft.loadPostsDone = true;
-            draft.mainPosts = draft.mainPosts.concat(action.data);
-            draft.hasMorePosts = action.data.length === 10;
+            draft.mainPosts = (action.data);//draft.mainPosts.concat(action.data);
+            draft.hasMorePosts = action.data.length === 10;//action.data.length === 10;
             break;
         case LOAD_USER_POSTS_FAILURE:
+            break;
         case LOAD_HASHTAG_POSTS_FAILURE:
+            break;
         case LOAD_POSTS_FAILURE:
             draft.loadPostsLoading = false;
             draft.loadPostsError = action.error;

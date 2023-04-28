@@ -74,7 +74,7 @@ function* uploadImages(action) {
 }
 
 function likePostAPI(data) {
-    return axios.patch(`/post/${data}/like`);
+    return axios.patch(`/post/${data}/like`);//patch 일부 수정
 }
 
 function* likePost(action) {
@@ -174,13 +174,13 @@ function* loadUserPosts(action) {
     }
 }
 
-function loadPostsAPI(lastId) {
-    return axios.get(`/posts?lastId=${lastId || 0}`);
+function loadPostsAPI(data) {
+    return axios.get(`/posts`, data);
 }
 
 function* loadPosts(action) {
     try {
-        const result = yield call(loadPostsAPI, action.lastId);
+        const result = yield call(loadPostsAPI, action.data);
         yield put({
             type: LOAD_POSTS_SUCCESS,
             data: result.data,

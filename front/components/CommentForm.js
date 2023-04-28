@@ -19,6 +19,10 @@ const CommentForm = ({post}) => {
 
     const onSubmitComment = useCallback((e) => {
         console.log(post.id, commentText);
+        if(!id){
+            alert('로그인 해주세요.');
+            return false;
+        }
         /*dispatch({
             type : ADD_COMMENT_REQUEST,
             data : {

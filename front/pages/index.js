@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import PostForm from "../components/PostForm";
 import PostCard from "../components/PostCard";
 import {useEffect} from "react";
-import {LOAD_POSTS_REQUEST} from "../reducers/post";
+import {LOAD_POST_REQUEST, LOAD_POSTS_REQUEST} from "../reducers/post";
 import {LOAD_USER_REQUEST} from "../reducers/user";
 const Home = () =>{
     const dispatch = useDispatch();
@@ -14,7 +14,7 @@ const Home = () =>{
         dispatch({
             type: LOAD_USER_REQUEST,
         });
-
+        console.log(`LOAD_POSTS_REQUEST occured`);
         dispatch({
            type: LOAD_POSTS_REQUEST,
         });
@@ -28,10 +28,12 @@ const Home = () =>{
             //scrollHeight: 총 길이
             console.log(window.scrollY, document.documentElement.clientHeight, document.documentElement.scrollHeight);
             if(window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300){
-                console.log('LOAD_POSTS_REQUEST');
+                console.log('LOAD_POSTS_REQUEST onScroll occured');
                 if(hasMorePosts && !loadPostsLoading){
+                    const lastId = mainPosts[mainPosts.length - 1]?.id;
                     dispatch({
                         type: LOAD_POSTS_REQUEST,
+                        lastId
                     });
                 }
             }
@@ -42,7 +44,7 @@ const Home = () =>{
         }
     }, [hasMorePosts, loadPostsLoading]);
 
-
+console.log(`mainPosts`+ mainPosts);
 
     return(
         <AppLayout>
