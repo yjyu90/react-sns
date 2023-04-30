@@ -12,7 +12,6 @@ import FollowButton from "./FollowButton";
 const PostCard = ({post}) => {
     const dispatch = useDispatch();
     const {removePostLoading} = useSelector((state)=>state.post);
-    const [liked, setLiked] = useState(false);
     const [commentFormOpened, setCommentFormOpened] = useState(false);
 
     const {me} = useSelector(state => state.user);
@@ -43,7 +42,8 @@ const PostCard = ({post}) => {
     }, []);
 
     const id = me?.id;
-
+    const liked = post.Likers.find((v)=> v.id === id);//게시글 좋아요 누른 사람 중 내가 있는지
+    
     return (
         <div style={{marginBottom:20}}>
             <Card
@@ -105,6 +105,7 @@ PostCard.propTypes = {
         createdAt: PropTypes.string,
         Comments: PropTypes.arrayOf(PropTypes.object),
         Images: PropTypes.arrayOf(PropTypes.object),
+        Likers : PropTypes.arrayOf(PropTypes.object),
     })
 }
 

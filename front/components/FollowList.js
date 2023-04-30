@@ -1,20 +1,42 @@
 import React from 'react';
 import {Button, Card, List} from 'antd';
 import {StopOutlined} from "@ant-design/icons";
+import {useDispatch} from "react-redux";
+import {REMOVE_FOLLOWER_REQUEST, UNFOLLOW_REQUEST} from "../reducers/user";
 //아이콘과는 상관없고요. 리액트에서 배열 안에 jsx를 쓸때는 key를 붙여주어야합니다.
 const FollowList = ({header,data}) => {
+
+    const dispatch = useDispatch();
+    const onCancel = (id) => () => {
+        if (header === '팔로잉') {
+            //header가 '팔로잉' 이면 팔로잉 제거(언팔로우)
+            dispatch({
+                type: UNFOLLOW_REQUEST,
+                data: id,
+            });
+        }
+        //header가 '팔로워' 이면 팔로워 제거
+        dispatch({
+            type: REMOVE_FOLLOWER_REQUEST,
+            data: id,
+        });
+    };
+
     return(
         <List
             style={{marginBottom: 20}}
             grid={{gutter:4, xs:2, md:3}}
             size="small"
             header={<div>{header}</div>}
-            loadMore={<div style={{textAlign: 'center', margin:'10px 0'}}><Button>더 보기</Button></div>}
+            loadMore={
+            <div style={{textAlign: 'center', margin:'10px 0'}}>
+                <Button>더 보기</Button>
+            </div>}
             bordered
             dataSource={data}
             renderItem={(item) => (
                 <List.Item style={{marginTop:20}}>
-                    <Card actions={[<StopOutlined key="stop" />]}>
+                    <Card actions={[<StopOutlined key="stop" onClick={onCancel(item.id)} />]}>
                         <Card.Meta description={item.nickname} />
                     </Card>
                 </List.Item>

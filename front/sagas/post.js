@@ -82,7 +82,7 @@ function* likePost(action) {
         const result = yield call(likePostAPI, action.data);
         yield put({
             type: LIKE_POST_SUCCESS,
-            data: result.data,
+            data: result.data,//result.data : PostId, UserId 가 들어있다.
         });
     } catch (err) {
         console.error(err);

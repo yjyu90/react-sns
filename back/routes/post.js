@@ -39,7 +39,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // POST 
         const hashtags = req.body.content.match(/#[^\s#]+/g);
         const post = await Post.create({
             content: req.body.content,
-            UserId: req.user.id,
+            UserId: req.user.id,//게시글 작성자 id
         });
         if (hashtags) {
             const result = await Promise.all(hashtags.map((tag) => Hashtag.findOrCreate({
@@ -82,6 +82,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // POST 
     }
 });
 
+//이미지들 업로드
 router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => { // POST /post/images
     console.log(req.files);
     res.json(req.files.map((v) => v.location.replace(/\/original\//, '/thumb/')));
@@ -230,7 +231,7 @@ router.patch('/:postId/like', isLoggedIn, async (req, res, next) => { // PATCH /
         if (!post) {
             return res.status(403).send('게시글이 존재하지 않습니다.');//403 금지
         }
-        await post.addLikers(req.user.id);
+        await post.addLikers(req.user.id);//좋아요
         res.json({ PostId: post.id, UserId: req.user.id });
     } catch (error) {
         console.error(error);
@@ -284,8 +285,8 @@ router.delete('/:postId', isLoggedIn, async (req, res, next) => { // DELETE /pos
     try {
         await Post.destroy({
             where: {
-                id: req.params.postId,
-                UserId: req.user.id,
+                id: req.params.postId,//게시글 id
+                UserId: req.user.id,//내가 쓴 게시글이어야 삭제된다, 다른 사람이 쓴 게시글은 못 지운다
             },
         });
         res.status(200).json({ PostId: parseInt(req.params.postId, 10) });
