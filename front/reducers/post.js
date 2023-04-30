@@ -234,7 +234,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         case LOAD_POSTS_SUCCESS:
             draft.loadPostsLoading = false;
             draft.loadPostsDone = true;
-            draft.mainPosts = (action.data);//draft.mainPosts.concat(action.data);
+            draft.mainPosts = (draft.mainPosts).concat(action.data);//draft.mainPosts.concat(action.data);
             draft.hasMorePosts = action.data.length === 10;//action.data.length === 10;
             break;
         case LOAD_USER_POSTS_FAILURE:
@@ -254,7 +254,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             draft.addPostLoading = false;
             draft.addPostDone = true;
             draft.mainPosts.unshift(action.data);
-            draft.imagePaths = [];
+            draft.imagePaths = [];//imagePaths 초기화
             break;
         case ADD_POST_FAILURE:
             draft.addPostLoading = false;

@@ -3,14 +3,23 @@ import {useDispatch, useSelector} from "react-redux";
 import PostForm from "../components/PostForm";
 import PostCard from "../components/PostCard";
 import {useEffect} from "react";
-import {LOAD_POST_REQUEST, LOAD_POSTS_REQUEST} from "../reducers/post";
-import {LOAD_USER_REQUEST} from "../reducers/user";
+import {LOAD_POSTS_REQUEST} from "../reducers/post";
+import {LOAD_MY_INFO_REQUEST, LOAD_USER_REQUEST} from "../reducers/user";
+import wrapper from '../store/configureStore';
+import axios from "axios";
+import {END} from "redux-saga";
 const Home = () =>{
     const dispatch = useDispatch();
     const {me} = useSelector(state => state.user);
-    const {mainPosts, hasMorePosts, loadPostsLoading} = useSelector(state => state.post);
+    const {mainPosts, hasMorePosts, loadPostsLoading, retweetError} = useSelector(state => state.post);
 
-    useEffect(()=>{
+    useEffect(() => {
+        if (retweetError) {
+            alert(retweetError);
+        }
+    }, [retweetError]);
+
+    /*useEffect(()=>{
         dispatch({
             type: LOAD_USER_REQUEST,
         });
@@ -18,7 +27,7 @@ const Home = () =>{
         dispatch({
            type: LOAD_POSTS_REQUEST,
         });
-    }, []);
+    }, []);*/
 
     useEffect(()=>{
 
@@ -42,7 +51,7 @@ const Home = () =>{
         return () => {
             window.removeEventListener('scroll', onScroll);
         }
-    }, [hasMorePosts, loadPostsLoading]);
+    }, [hasMorePosts, loadPostsLoading, mainPosts]);
 
 console.log(`mainPosts`+ mainPosts);
 
@@ -53,5 +62,21 @@ console.log(`mainPosts`+ mainPosts);
         </AppLayout>
     );
 }
+
+export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
+    const cookie = context.req ? context.req.headers.cookie : '';
+    axios.defaults.headers.Cookie = '';
+    if (context.req && cookie) {
+        axios.defaults.headers.Cookie = cookie;
+    }
+    context.store.dispatch({
+        type: LOAD_USER_REQUEST,
+    });
+    context.store.dispatch({
+        type: LOAD_POSTS_REQUEST,
+    });
+    context.store.dispatch(END);//REQUEST -> SUCCESS 되기 까지 기다린다.
+    await context.store.sagaTask.toPromise();
+});
 
 export default Home;

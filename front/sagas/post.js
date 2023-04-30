@@ -174,13 +174,13 @@ function* loadUserPosts(action) {
     }
 }
 
-function loadPostsAPI(data) {
-    return axios.get(`/posts`, data);
+function loadPostsAPI(lastId) {
+    return axios.get(`/posts?lastId=${lastId || 0}`);//lastId 가 undefined 인 경우 lastId를 0으로
 }
 
 function* loadPosts(action) {
     try {
-        const result = yield call(loadPostsAPI, action.data);
+        const result = yield call(loadPostsAPI, action.lastId);
         yield put({
             type: LOAD_POSTS_SUCCESS,
             data: result.data,
@@ -195,7 +195,7 @@ function* loadPosts(action) {
 }
 
 function addPostAPI(data){
-    return axios.post('/post', {content : data});
+    return axios.post('/post', data);//FormData 는 json으로 감싸면 안된다.
 }
 
 function* addPost(action) {

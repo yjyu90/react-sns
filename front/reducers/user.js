@@ -216,7 +216,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             break;
         case LOAD_USER_SUCCESS:
             draft.loadUserLoading = false;
-            draft.userInfo = action.data;
+            draft.me = action.data;
             draft.loadUserDone = true;
             break;
         case LOAD_USER_FAILURE:

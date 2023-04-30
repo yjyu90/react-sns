@@ -4,7 +4,7 @@ const postsRouter = require('./routes/posts');
 const userRouter = require('./routes/user');
 const db = require('./models');
 const passportConfig = require('./passport');
-
+const path = require('path');
 const morgan = require('morgan');
 
 const dotenv = require('dotenv');
@@ -31,6 +31,8 @@ app.use(cors({
     origin : true,// origin : true 도 가능 http://localhost:3060
     credentials : true,//쿠키를 같이 전달하고자 하는 경우 사용 Access-Control-Allow-Credentials : true
 }));//origin : true 로 설정해두면 * 대신 보낸 곳의 주소가 자동으로 들어가 편리합니다.
+
+app.use('/', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json());//json 데이터를 프론트의 req.body에 넣어준다
 app.use(express.urlencoded({extended : true}));//일반 form 처리
 

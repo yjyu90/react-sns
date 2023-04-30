@@ -23,13 +23,23 @@ AWS.config.update({
     region: 'ap-northeast-2',
 });
 const upload = multer({
-    storage: multerS3({
+    storage : multer.diskStorage({
+        destination(req, file, done){
+           done(null, 'uploads');
+        },
+        filename(req, file, done){
+            const ext = path.extname(file.originalname); //확장자 추출
+            const basename = path.basename(file.originalname, ext);
+            done(null, basename + '_' + new Date().getTime() + ext);
+        }
+    }),
+    /*storage: multerS3({
         s3: new AWS.S3(),
         bucket: 'react-nodebird',
         key(req, file, cb) {
             cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`)
         }
-    }),
+    }),*/
     limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
 });
 
@@ -42,14 +52,14 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // POST 
             UserId: req.user.id,//게시글 작성자 id
         });
         if (hashtags) {
-            const result = await Promise.all(hashtags.map((tag) => Hashtag.findOrCreate({
+            const result = await Promise.all(hashtags.map((tag) => Hashtag.findOrCreate({//없는 경우는 등록하고, 있는 경우 가져온다.
                 where: { name: tag.slice(1).toLowerCase() },
-            }))); // [[노드, true], [리액트, true]]
-            await post.addHashtags(result.map((v) => v[0]));
+            }))); // 결과값이 [[노드, true], [리액트, true]]
+            await post.addHashtags(result.map((v) => v[0]));// 결과값이 [[노드, true], [리액트, true]] 이므로 v[0]
         }
-        if (req.body.image) {
+        if (req.body.image) {//이미지가 있는 경우
             if (Array.isArray(req.body.image)) { // 이미지를 여러 개 올리면 image: [제로초.png, 부기초.png]
-                const images = await Promise.all(req.body.image.map((image) => Image.create({ src: image })));
+                const images = await Promise.all(req.body.image.map((image) => Image.create({ src: image })));//DB에는 파일 경로만 저장된다.
                 await post.addImages(images);
             } else { // 이미지를 하나만 올리면 image: 제로초.png
                 const image = await Image.create({ src: req.body.image });
@@ -85,7 +95,8 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // POST 
 //이미지들 업로드
 router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => { // POST /post/images
     console.log(req.files);
-    res.json(req.files.map((v) => v.location.replace(/\/original\//, '/thumb/')));
+    res.json(req.files.map((v) => v.filename));
+    //res.json(req.files.map((v) => v.location.replace(/\/original\//, '/thumb/')));
 });
 
 router.get('/:postId', async (req, res, next) => { // GET /post/1
@@ -143,7 +154,7 @@ router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => { // POST 
         if (!post) {
             return res.status(403).send('존재하지 않는 게시글입니다.');
         }
-        if (req.user.id === post.UserId || (post.Retweet && post.Retweet.UserId === req.user.id)) {
+        if (req.user.id === post.UserId || (post.Retweet && post.Retweet.UserId === req.user.id)) {//자신의 글을 리트윗한 경우, 자신의 게시글을 리트윗한 글을 다시 자신이 리트윗한 경우
             return res.status(403).send('자신의 글은 리트윗할 수 없습니다.');
         }
         const retweetTargetId = post.RetweetId || post.id;
