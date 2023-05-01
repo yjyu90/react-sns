@@ -74,6 +74,7 @@ router.get('/followings', isLoggedIn, async (req, res, next) => { // GET /user/f
     }
 });
 
+//상대방 정보 조회
 router.get('/:userId', async (req, res, next) => { // GET /user/1
     try {
         const fullUserWithoutPassword = await User.findOne({

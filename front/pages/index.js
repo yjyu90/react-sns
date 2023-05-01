@@ -62,7 +62,8 @@ console.log(`mainPosts`+ mainPosts);
         </AppLayout>
     );
 }
-
+//getStaticProps  :  언제 접속해도 데이터가 바뀌는 경우가 없을 때
+//getServerSideProps  :  접속할 때마다 접속한 상황에 따라서 화면이 바뀌어야 하는 경우에 사용
 export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
     const cookie = context.req ? context.req.headers.cookie : '';
     axios.defaults.headers.Cookie = '';
@@ -70,7 +71,7 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
         axios.defaults.headers.Cookie = cookie;
     }
     context.store.dispatch({
-        type: LOAD_USER_REQUEST,
+        type: LOAD_MY_INFO_REQUEST,
     });
     context.store.dispatch({
         type: LOAD_POSTS_REQUEST,

@@ -107,8 +107,8 @@ function* changeNickname(action) {
     }
 }
 
-function loadUserAPI() {
-    return axios.get(`/user/`);
+function loadUserAPI(data) {
+    return axios.get(`/user/${data}`);
 }
 
 function* loadUser(action) {

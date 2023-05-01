@@ -7,6 +7,7 @@ const router = express.Router();
 
 //게시글 여러 개 조회
 router.get('/', async (req, res, next) => { // GET /posts
+  console.log('req.headers' + req.headers);
   try {
     const where = {};
     if (parseInt(req.query.lastId, 10)) { // 초기 로딩이 아닐 때
