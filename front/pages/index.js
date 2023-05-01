@@ -64,6 +64,7 @@ console.log(`mainPosts`+ mainPosts);
 }
 //getStaticProps  :  언제 접속해도 데이터가 바뀌는 경우가 없을 때
 //getServerSideProps  :  접속할 때마다 접속한 상황에 따라서 화면이 바뀌어야 하는 경우에 사용
+//다이나믹 라우팅인 경우, getStaticProps를 쓰면 getStaticPaths를 반드시 써야한다.
 export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
     const cookie = context.req ? context.req.headers.cookie : '';
     axios.defaults.headers.Cookie = '';

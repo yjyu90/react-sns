@@ -1,17 +1,23 @@
-const {DataTypes} = require("sequelize");
-module.exports = (sequelize, DataTypes) => {
-    const Hashtag = sequelize.define('Hashtag', { //MySQL에는 posts 테이블 생성됨
-        //id는 기본적으로 자동으로 1,2,3,4... 으로 순서대로 올라갑니다
-        name: {
-            type: DataTypes.STRING(20),
-            allowNull: false,
-        },
-    }, {
-        charset: 'utf8mb4',//이모티콘 쓰려면 mb4 넣어줘야 함
-        collate: 'utf8mb4_general_ci', //이모티콘 저장
-    });
-    Hashtag.associate = (db) => {
-        db.Hashtag.belongsToMany(db.Post, {through : "PostHashtag"});
-    };
-    return Hashtag;
-}
+const DataTypes = require('sequelize');
+const { Model } = DataTypes;
+
+module.exports = class Hashtag extends Model {
+    static init(sequelize) {
+        return super.init({
+            // id가 기본적으로 들어있다.
+            name: {
+                type: DataTypes.STRING(20),
+                allowNull: false,
+            },
+        }, {
+            modelName: 'Hashtag',
+            tableName: 'hashtags',
+            charset: 'utf8mb4',
+            collate: 'utf8mb4_general_ci', // 이모티콘 저장
+            sequelize,
+        });
+    }
+    static associate(db) {
+        db.Hashtag.belongsToMany(db.Post, { through: 'PostHashtag' });
+    }
+};

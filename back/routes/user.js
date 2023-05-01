@@ -48,7 +48,7 @@ router.get('/followers', isLoggedIn, async (req, res, next) => { // GET /user/fo
             res.status(403).send('없는 사람을 찾으려고 하시네요?');
         }
         const followers = await user.getFollowers({//내 팔로워 찾기
-            //limit: parseInt(req.query.limit, 10),
+            limit: parseInt(req.query.limit, 10),
         });
         res.status(200).json(followers);
     } catch (error) {
@@ -65,7 +65,7 @@ router.get('/followings', isLoggedIn, async (req, res, next) => { // GET /user/f
             res.status(403).send('없는 사람을 찾으려고 하시네요?');
         }
         const followings = await user.getFollowings({
-            //limit: parseInt(req.query.limit, 10),
+            limit: parseInt(req.query.limit, 10),
         });
         res.status(200).json(followings);
     } catch (error) {

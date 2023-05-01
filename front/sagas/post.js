@@ -134,7 +134,7 @@ function* loadPost(action) {
 }
 
 function loadHashtagPostsAPI(data, lastId) {
-    return axios.get(`/hashtag/${encodeURIComponent(data)}?lastId=${lastId || 0}`);
+    return axios.get(`/hashtag/${encodeURIComponent(data)}?lastId=${lastId || 0}`);//data가 한글이므로 encodeURIComponent로 감싼다.
 }
 
 function* loadHashtagPosts(action) {
@@ -154,6 +154,7 @@ function* loadHashtagPosts(action) {
     }
 }
 
+//사용자 게시글 가져오기
 function loadUserPostsAPI(data, lastId) {
     return axios.get(`/user/${data}/posts?lastId=${lastId || 0}`);
 }

@@ -2,7 +2,7 @@ import produce from '../util/produce';
 
 export const initialState = {
     mainPosts: [],
-    singlePost: null,
+    singlePost: null,//단일 게시글 조회
     imagePaths: [],//이미지 업로드 시 이미지 경로
     hasMorePosts: true,
     likePostLoading: false,

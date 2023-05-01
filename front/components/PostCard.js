@@ -20,7 +20,7 @@ import {
 } from '../reducers/post';
 import FollowButton from './FollowButton';
 
-moment.locale('ko');
+moment.locale('ko');//한글로
 
 const PostCard = ({ post }) => {
     const dispatch = useDispatch();

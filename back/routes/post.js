@@ -99,6 +99,7 @@ router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => { 
     //res.json(req.files.map((v) => v.location.replace(/\/original\//, '/thumb/')));
 });
 
+//단일 게시글 조회
 router.get('/:postId', async (req, res, next) => { // GET /post/1
     try {
         const post = await Post.findOne({

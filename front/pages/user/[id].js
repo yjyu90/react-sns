@@ -11,7 +11,7 @@ import { LOAD_MY_INFO_REQUEST, LOAD_USER_REQUEST } from '../../reducers/user';
 import PostCard from '../../components/PostCard';
 import wrapper from '../../store/configureStore';
 import AppLayout from '../../components/AppLayout';
-
+//특정 사용자 게시글 가져오기
 const User = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -26,7 +26,7 @@ const User = () => {
           dispatch({
             type: LOAD_USER_POSTS_REQUEST,
             lastId: mainPosts[mainPosts.length - 1] && mainPosts[mainPosts.length - 1].id,
-            data: id,
+            data: id,//사용자 id
           });
         }
       }

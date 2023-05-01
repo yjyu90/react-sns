@@ -21,6 +21,10 @@ const Post = () => {
   //   return <div>로딩중...</div>;
   // }
 
+//1. og:title - 사이트의 제목 태그
+//2. og:type - 사이트의 종류 스타일 예) video.movie
+//3. og:image - 사이트를 나타낼 대표 이미지
+//4. og:url - 사이트의 대표 url
   return (
     <AppLayout>
       <Head>
@@ -50,6 +54,7 @@ const Post = () => {
 //   };
 // }
 
+//getServerSideProps, getStaticProps 안에서는 context.params.id 와 context.query.id 가 같다.
 export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
   const cookie = context.req ? context.req.headers.cookie : '';
   console.log(context);
@@ -61,7 +66,7 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
     type: LOAD_MY_INFO_REQUEST,
   });
   context.store.dispatch({
-    type: LOAD_POST_REQUEST,
+    type: LOAD_POST_REQUEST,//단일 게시글 불러오기
     data: context.params.id,
   });
   context.store.dispatch(END);

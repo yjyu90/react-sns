@@ -4,17 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "next -p 3060",
-    "build": "next build"
+    "dev"  : "cross-env NODE_ENV=development next -p 3060",
+    "build": "cross-env ANALYZE=true NODE_ENV=development next build",
+    "start": "cross-env ANALYZE=true NODE_ENV=development next start -p 3060"
   },
   "author": "yjyu",
   "license": "ISC",
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
+    "@next/bundle-analyzer": "^13.3.4",
     "antd": "^4.24.0",
     "axios": "^0.19.2",
     "babel-plugin-styled-components": "^2.0.7",
+    "cross-env": "^7.0.2",
     "immer": "^9.0.21",
+    "moment": "^2.29.4",
     "next": "^9.5.5",
     "next-redux-wrapper": "^6.0.2",
     "prop-types": "^15.8.1",
@@ -26,7 +30,8 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-saga": "^1.2.3",
     "shortid": "^2.2.16",
-    "styled-components": "^5.3.9"
+    "styled-components": "^5.3.9",
+    "swr": "^2.1.5"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
