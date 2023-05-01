@@ -32,10 +32,17 @@ export const initialState = {
     uploadImagesLoading: false,
     uploadImagesDone: false,
     uploadImagesError: null,
+    updateUploadImagesLoading: false,
+    updateUploadImagesDone: false,
+    updateUploadImagesError: null,
     retweetLoading: false,
     retweetDone: false,
     retweetError: null,
 };
+
+export const UPDATE_UPLOAD_IMAGES_REQUEST = 'UPDATE_UPLOAD_IMAGES_REQUEST';
+export const UPDATE_UPLOAD_IMAGES_SUCCESS = 'UPDATE_UPLOAD_IMAGES_SUCCESS';
+export const UPDATE_UPLOAD_IMAGES_FAILURE = 'UPDATE_UPLOAD_IMAGES_FAILURE';
 
 export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
 export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
@@ -156,6 +163,21 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             break;
         case REMOVE_IMAGE:
             draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
+            break;
+        case UPDATE_UPLOAD_IMAGES_REQUEST:
+            draft.updateUploadImagesLoading = true;
+            draft.updateUploadImagesDone = false;
+            draft.updateUploadImagesError = null;
+            break;
+        case UPDATE_UPLOAD_IMAGES_SUCCESS: {
+            draft.imagePaths = draft.imagePaths.concat(action.data);
+            draft.updateUploadImagesLoading = false;
+            draft.updateUploadImagesDone = true;
+            break;
+        }
+        case UPDATE_UPLOAD_IMAGES_FAILURE:
+            draft.updateUploadImagesLoading = false;
+            draft.updateUploadImagesError = action.error;
             break;
         case UPLOAD_IMAGES_REQUEST:
             draft.uploadImagesLoading = true;

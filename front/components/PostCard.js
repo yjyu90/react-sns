@@ -134,7 +134,7 @@ const PostCard = ({ post }) => {
                                     </Link>
                                 )}
                                 title={post.Retweet.User.nickname}
-                                description={<PostCardContent postData={post.Retweet.content} onChangePost={onChangePost} onCancelUpdate={onCancelUpdate} />}
+                                description={<PostCardContent editMode={editMode} postData={post.Retweet.content} onChangePost={onChangePost} onCancelUpdate={onCancelUpdate} />}
                             />
                         </Card>
                     )
