@@ -37,7 +37,7 @@ const PostCard = ({ post }) => {
         setEditMode(false);
     }, []);
 
-    const onChangePost = useCallback((editText) => () => {
+    const onChangePost = useCallback((editText) => () => {//고차함수
         dispatch({
             type: UPDATE_POST_REQUEST,
             data: {

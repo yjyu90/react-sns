@@ -48,7 +48,7 @@ const PostCardContent = ({ postData, editMode, onChangePost, onCancelUpdate }) =
 
 PostCardContent.propTypes = {
     postData: PropTypes.string.isRequired,
-    editMode: PropTypes.bool,
+    editMode: PropTypes.bool,//editMode는 필수 값 아님
     onChangePost: PropTypes.func.isRequired,
     onCancelUpdate: PropTypes.func.isRequired,
 };

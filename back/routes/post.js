@@ -274,6 +274,7 @@ router.delete('/:postId/like', isLoggedIn, async (req, res, next) => { // DELETE
     }
 });
 
+//게시글 수정
 router.patch('/:postId', isLoggedIn, async (req, res, next) => { // PATCH /post/10
     const hashtags = req.body.content.match(/#[^\s#]+/g);
     try {
@@ -290,7 +291,7 @@ router.patch('/:postId', isLoggedIn, async (req, res, next) => { // PATCH /post/
             const result = await Promise.all(hashtags.map((tag) => Hashtag.findOrCreate({
                 where: { name: tag.slice(1).toLowerCase() },
             }))); // [[노드, true], [리액트, true]]
-            await post.setHashtags(result.map((v) => v[0]));
+            await post.setHashtags(result.map((v) => v[0]));//setHashtags : 기존 것 삭제, 새로운 것 추가
         }
         res.status(200).json({ PostId: parseInt(req.params.postId, 10), content: req.body.content });
     } catch (error) {
