@@ -4,6 +4,7 @@ export const initialState = {
     mainPosts: [],
     singlePost: null,//단일 게시글 조회
     imagePaths: [],//이미지 업로드 시 이미지 경로
+    updateImagePaths: [],
     hasMorePosts: true,
     likePostLoading: false,
     likePostDone: false,
@@ -170,7 +171,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             draft.updateUploadImagesError = null;
             break;
         case UPDATE_UPLOAD_IMAGES_SUCCESS: {
-            draft.imagePaths = draft.imagePaths.concat(action.data);
+            draft.updateImagePaths = draft.updateImagePaths.concat(action.data);
             draft.updateUploadImagesLoading = false;
             draft.updateUploadImagesDone = true;
             break;

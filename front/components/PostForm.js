@@ -61,6 +61,7 @@ const PostForm = () => {
                 value={text}
                 onChange={onChangeText}
                 maxLength={140}
+                style={{width: 700, minWidth: 700}}
                 placeholder="어떤 일이 있었나요?">
             </Input.TextArea>
             <div>

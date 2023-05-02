@@ -10,14 +10,19 @@ import {
     ADD_POST_SUCCESS,
     LIKE_POST_FAILURE,
     LIKE_POST_REQUEST,
-    LIKE_POST_SUCCESS, LOAD_HASHTAG_POSTS_FAILURE,
-    LOAD_HASHTAG_POSTS_REQUEST, LOAD_HASHTAG_POSTS_SUCCESS,
+    LIKE_POST_SUCCESS,
+    LOAD_HASHTAG_POSTS_FAILURE,
+    LOAD_HASHTAG_POSTS_REQUEST,
+    LOAD_HASHTAG_POSTS_SUCCESS,
     LOAD_POST_FAILURE,
     LOAD_POST_REQUEST,
     LOAD_POST_SUCCESS,
     LOAD_POSTS_FAILURE,
     LOAD_POSTS_REQUEST,
-    LOAD_POSTS_SUCCESS, LOAD_USER_POSTS_FAILURE, LOAD_USER_POSTS_REQUEST, LOAD_USER_POSTS_SUCCESS,
+    LOAD_POSTS_SUCCESS,
+    LOAD_USER_POSTS_FAILURE,
+    LOAD_USER_POSTS_REQUEST,
+    LOAD_USER_POSTS_SUCCESS,
     REMOVE_POST_FAILURE,
     REMOVE_POST_REQUEST,
     REMOVE_POST_SUCCESS,
@@ -26,7 +31,12 @@ import {
     RETWEET_SUCCESS,
     UNLIKE_POST_FAILURE,
     UNLIKE_POST_REQUEST,
-    UNLIKE_POST_SUCCESS, UPDATE_POST_FAILURE, UPDATE_POST_REQUEST, UPDATE_POST_SUCCESS,
+    UNLIKE_POST_SUCCESS,
+    UPDATE_POST_FAILURE,
+    UPDATE_POST_REQUEST,
+    UPDATE_POST_SUCCESS, UPDATE_UPLOAD_IMAGES_FAILURE,
+    UPDATE_UPLOAD_IMAGES_REQUEST,
+    UPDATE_UPLOAD_IMAGES_SUCCESS,
     UPLOAD_IMAGES_FAILURE,
     UPLOAD_IMAGES_REQUEST,
     UPLOAD_IMAGES_SUCCESS,
@@ -48,6 +58,26 @@ function* retweet(action) {
         console.error(err);
         yield put({
             type: RETWEET_FAILURE,
+            error: err.response.data,
+        });
+    }
+}
+
+function updateUploadImagesAPI(data) {
+    return axios.post('/post/updateImages', data);
+}
+
+function* updateUploadImages(action) {
+    try {
+        const result = yield call(updateUploadImagesAPI, action.data);
+        yield put({
+            type: UPDATE_UPLOAD_IMAGES_SUCCESS,
+            data: result.data,
+        });
+    } catch (err) {
+        console.error(err);
+        yield put({
+            type: UPDATE_UPLOAD_IMAGES_FAILURE,
             error: err.response.data,
         });
     }
@@ -291,6 +321,10 @@ function* watchUploadImages() {
     yield takeLatest(UPLOAD_IMAGES_REQUEST, uploadImages);
 }
 
+function* watchUpdateUploadImages(){
+    yield takeLatest(UPDATE_UPLOAD_IMAGES_REQUEST, updateUploadImages);
+}
+
 function* watchLikePost() {
     yield takeLatest(LIKE_POST_REQUEST, likePost);
 }
@@ -335,6 +369,7 @@ export default function* postSaga() {
     yield all([
         fork(watchRetweet),
         fork(watchUploadImages),
+        fork(watchUpdateUploadImages),
         fork(watchLikePost),
         fork(watchUnlikePost),
         fork(watchAddPost),
